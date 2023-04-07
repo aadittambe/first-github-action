@@ -216,4 +216,41 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
            git push
    ```
 
+   <details>
+   <summary>🆘 Help!</summary>
+
+   ```
+   name: 3. Hello, Python!
+
+   on:
+   schedule:
+       - cron: "*/10 * * * *"
+   workflow_dispatch:
+
+   jobs:
+   get-data:
+       runs-on: ubuntu-latest
+       steps:
+       - name: check out the repo
+           uses: actions/checkout@v3
+       - name: fetch data
+           run: |-
+           curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
+       - name: Install requirements
+           run: python -m pip install pandas
+       - name: Run script to create main csv
+           run: python get_all_data.py
+       - name: Commit and push if it changed
+           run: |-
+           git config user.name "Automated"
+           git config user.email "actions@users.noreply.github.com"
+           git add -A
+           timestamp=$(date -u)
+           git commit -m "Latest data: ${timestamp}" || exit 0
+           git push
+
+   ```
+
+   </details>
+
 3. Go to the Actions tab and run the workflow!
