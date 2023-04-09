@@ -1,5 +1,12 @@
 # First GitHub Action
 
+Contents:
+
+- [What are GitHub Actions?](#what-are-github-actions)
+- [What are we doing today?](#what-are-we-doing-today)
+- [Prerequisites](#before-we-begin)
+- [Let's get started!](#lets-get-started)
+
 ## What are GitHub Actions?
 
 📝 set of instructions (aka, a workflow)
@@ -254,3 +261,13 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
    </details>
 
 3. Go to the Actions tab and run the workflow!
+
+---
+
+## Appendix
+
+- Are there examples of GitHub Actions?
+
+- Are there restrictions / limitations on GitHub Actions?
+
+- If I have an API key or a password used in my scraper or workflow, how do I keep it hidden?
