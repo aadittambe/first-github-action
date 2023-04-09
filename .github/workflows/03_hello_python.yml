@@ -14,8 +14,8 @@ jobs:
       - name: fetch data
         run: |-
           curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
-      - name: Install requirements
-        run: python -m pip install pandas
+      # - name: Install requirements
+      #   run: python -m pip install pandas
       - name: Run script to create main csv
         run: python get_all_data.py
       - name: Commit and push if it changed
