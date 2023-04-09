@@ -557,3 +557,5 @@ time,latitude,longitude,depth,mag,magType,nst,gap,dmin,rms,net,id,updated,place,
 2023-04-08T20:45:05.280Z,17.9296666666667,-66.8421666666667,12.1,2.3,md,6.0,223.0,0.05731,0.08,pr,pr71402963,2023-04-08T21:01:45.010Z,Puerto Rico region,earthquake,0.88,0.43,0.0519762044989185,3.0,reviewed,pr,pr
 2023-04-08T20:32:32.940Z,33.5285,-116.7275,4.83,0.57,ml,30.0,78.0,0.0377,0.1,ci,ci40438464,2023-04-09T15:22:26.951Z,"6km WSW of Anza, CA",earthquake,0.15,0.21,0.142,11.0,reviewed,ci,ci
 2023-04-08T20:25:11.888Z,53.9099,-165.4573,66.396,5.1,mwr,157.0,64.0,0.295,0.8,us,us6000k2wm,2023-04-09T14:35:17.563Z,"32 km SE of Akutan, Alaska",earthquake,4.93,3.832,0.075,17.0,reviewed,us,us
+2023-04-09T20:21:40.387Z,61.3453,-150.5183,12.0,1.8,ml,,,,0.79,ak,ak0234k28m52,2023-04-09T20:24:13.093Z,"22 km S of Susitna, Alaska",earthquake,,0.3,,,automatic,ak,ak
+2023-04-09T19:37:43.811Z,13.2463,93.1606,35.0,4.4,mb,55.0,58.0,1.633,0.47,us,us6000k347,2023-04-09T20:24:17.040Z,"177 km NNE of Bamboo Flat, India",earthquake,6.31,1.914,0.09,36.0,reviewed,us,us
