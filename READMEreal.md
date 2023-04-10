@@ -2,11 +2,6 @@
 
 Contents:
 
-- [What are GitHub Actions?](#what-are-github-actions)
-- [What are we doing today?](#what-are-we-doing-today)
-- [Prerequisites](#before-we-begin)
-- [Let's get started!](#lets-get-started)
-
 ## What are GitHub Actions?
 
 📝 set of instructions (aka, a workflow)
@@ -23,75 +18,17 @@ Contents:
 
 ⚙️ run two tasks
 
-## Before we begin:
+## Prerequisites
 
-🚓 Let's give your GitHub repo permission to accept data from a GitHub Action
+- A GitHub account
+- with permission to let Actions commit and push files
 
----
+## Let's get started!
 
-## Let's get started
-
-### 1️⃣ Hello, world!
-
-To get familiar with the YML syntax, and how a basic GitHub Action works, let's write a simple script that
-
-1. is triggered on a schedule (every 10 minutes) or on a manual button push
-2. runs on an Ubuntu virtual machine
-3. prints a string, `Hello, world!` using the `echo` command.
-
-Workflows live in hidden directories called `.github/workflows`. Note the `.` before "github". Let's create that directly from the browser.
-
-1. Create the `.github/workflows/` directories, and a file called `hello_world.yml` inside it
-
-   <details>
-
-   <summary>How?</summary>
-
-   ![](screenshots/Screenshot%202023-04-07%20at%2011.34.00%20AM.png)
-
-   </details>
-
-2. Next, copy and paste the following code in the file, and commit it
-
-   ```
-   name: 1. Hello, world!
-
-   on:
-   schedule:
-       - cron: "*/10 * * * *"
-   workflow_dispatch:
-
-   jobs:
-   hello_world:
-       runs-on: ubuntu-latest
-       steps:
-       - name: check out the repo
-           uses: actions/checkout@v3
-       - name: print, "hello, world!"
-           run: echo hello, world!
-   ```
-
-   <details>
-   <summary>How?</summary>
-
-   ![](screenshots/Screenshot%202023-04-07%20at%2011.36.54%20AM.png)
-
-   </details>
-
-3. Navigate to the `Actions` tab in the repo, and see the `Hello, world` string logged!
-   <details>
-   <summary>How?</summary>
-
-   ![](screenshots/Screenshot%202023-04-07%20at%2011.47.18%20AM.png)
-   ![](screenshots/Screenshot%202023-04-07%20at%2011.49.06%20AM.png)
-
-   </details>
-
-You built your first GitHub Action
-
-### 2️⃣ Hello, data!
+### 1️⃣ Hello, data (Watch!)
 
 To get familiar with logging data to the repository, let's write a simple `curl` script that fetches earthquake data provided by USGS. This file is updated every minute, so it's a good candidate for running a GitHub Action.
+The file source page of the page is [here](https://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php).
 
 Let's write a script that
 
@@ -100,14 +37,21 @@ Let's write a script that
 3. uses `curl` to download a CSV
 4. commits and pushes the CSV to our repo
 
-We'll use the instructions from 1️⃣ to create the YML workflow.
+For the purposes of this presentation, we will be working entirely in the browser. However, you can set up a local folder for version control with git.
 
-1. Let's create a new YML file, and call it `hello_data.yml`
+1. Create the `.github/workflows/` directories, and a file called `hello_data.yml` inside it
 
-2. Copy and paste the following YML code in that file, and commit it:
+   <details>
+
+   <summary>How?</summary>
+
+   ![](screenshots/Screenshot%202023-04-10%20at%202.17.28%20PM.png)
+   </details>
+
+2. Next, copy and paste the following code in the file, and commit it
 
    ```
-   name: 2. Hello, data!
+   name: Hello, data!
 
    on:
    schedule:
@@ -133,9 +77,24 @@ We'll use the instructions from 1️⃣ to create the YML workflow.
            git push
    ```
 
-3. In the Actions tab, see the workflow run
+   <details>
+   <summary>How?</summary>
+   ![](screenshots/Screenshot%202023-04-10%20at%202.26.11%20PM.png)
+   </details>
 
-### 3️⃣ Hello, Python!
+3. Navigate to the `Actions` tab in the repo, and run the Action.
+   We are able to manually run the Action because of the `workflow_dispatch` keyword we added to our YML file.
+
+   <details>
+   <summary>How?</summary>
+
+   ![](screenshots/Screenshot%202023-04-10%20at%202.33.20%20PM.png)
+
+   </details>
+
+4. Let's go back to the `Code` section of our repository, and see the new CSV created!
+
+### 2️⃣ Hello, Python (Write!)
 
 For our last workflow, we are going to up the complexity a bit, and hook a Python script to our workflow. In a new workflow file, we will add a second task to what we did in the previous step.
 
@@ -163,12 +122,12 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
 
    if path.is_file() == False:
    # if false, save initial main file
-   df_current.to_csv("usgs_main.csv", index = False)
+    df_current.to_csv("usgs_main.csv", index = False)
 
    else:
    # if the file already exists, save it to a dataframe and then append to a new one
-   df_main_old = pd.read_csv("usgs_main.csv")
-   df_main_new = pd.concat([df_main_old,df_current])
+    df_main_old = pd.read_csv("usgs_main.csv")
+    df_main_new = pd.concat([df_main_old,df_current])
 
    # deduplicate based on unique id
    df_main_new_drop_dupes = df_main_new.drop_duplicates(subset = "id", keep = "first")
@@ -185,14 +144,13 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
 
    </details>
 
-2. Navigate back to the repo, and we will create another YML workflow file, just like we did in step 1 and 2. This time, we will call it `hello_python.yml`.
+2. Navigate back to the repo, and we will create another YML workflow file, just like we did in step 1. This time, we will call it `hello_python.yml`.
 
    ✍️ This section will require you to fill in some blanks ✍️
-
    Copy the next code chunk and paste it into the file:
 
    ```
-   name: 3. Hello, Python!
+   name: Hello, Python!
 
    on:
    schedule:
@@ -210,7 +168,7 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
            run: |-
            curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
        - name: Install requirements
-           run: python -m pip install # ---TO FILL: what Python library did we use? 🐼---
+           run: python -m pip install # ---TO FILL: what Python libraries did we use? 🐼 and 🚗 ---
        - name: Run script to create main csv
            run: python # ---TO FILL: what's the name of our file? 🐍---
        - name: Commit and push if it changed
@@ -223,11 +181,11 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
            git push
    ```
 
-   <details>
-   <summary>🆘 Help!</summary>
+    <details>
+    <summary>🆘 Help!</summary>
 
    ```
-   name: 3. Hello, Python!
+   name: Hello, Python!
 
    on:
    schedule:
@@ -244,8 +202,8 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
            run: |-
            curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
        - name: Install requirements
-           run: python -m pip install pandas
-       - name: Run script to create main csv
+           run: python -m pip install pandas pathlib
+       - name: Run script to creat main csv
            run: python get_all_data.py
        - name: Commit and push if it changed
            run: |-
@@ -258,16 +216,23 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
 
    ```
 
-   </details>
-
-3. Go to the Actions tab and run the workflow!
-
----
+    </details>
 
 ## Appendix
 
+- [GitHub Actions documentation](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions), including helpful resources for all the keywords the workflow uses.
+
 - Are there examples of GitHub Actions?
+
+  - Run a Twitter bot or a [Slack bot](https://github.com/aadittambe/slack-bot)
+  - Run [web scrapers](https://github.com/aadittambe/thanksgiving-travel)
+  - Build [an app](https://github.com/aadittambe/aadittambe.com/blob/main/.github/workflows/deploy.yml) every time new code is pushed
+  - Other [fun](https://github.com/aadittambe/kindle-cost-scraper) things!
 
 - Are there restrictions / limitations on GitHub Actions?
 
+  - Each job in a workflow can run for up to [6 hours](https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration) of execution time.
+  - Shortest interval you can schedule a workflow is [5 minutes](https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions).
+
 - If I have an API key or a password used in my scraper or workflow, how do I keep it hidden?
+  - You can store your password as a [repository secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets), and access it similar to environment variables you would normally use.
