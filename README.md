@@ -188,7 +188,7 @@ on:
 
 jobs:
     get-data:
-        runs-on: # ---TO FILL:  let's use an Ubuntu 🖥️ (the latest one!)---
+        runs-on: ___ # ---TO FILL:  let's use an Ubuntu 🖥️ (the latest one!)---
         steps:
             - name: check out the repo
               uses: actions/checkout@v3
