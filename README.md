@@ -207,8 +207,8 @@ jobs:
 
 ```
 
-    <details>
-    <summary>🆘 Help!</summary>
+<details>
+<summary>🆘 Help!</summary>
 
 ```
 name: Hello, Python!
@@ -242,7 +242,7 @@ jobs:
 
 ```
 
-    </details>
+</details>
 
 ## Appendix
 
