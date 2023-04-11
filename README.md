@@ -57,30 +57,30 @@ For the purposes of this presentation, we will be working entirely in the browse
 2. Next, copy and paste the following code in the file, and commit it
 
    ```
-   name: Hello, data!
+    name: Hello, data!
 
-   on:
-   schedule:
-       - cron: "*/10 * * * *"
-   workflow_dispatch:
+    on:
+    schedule:
+        - cron: "*/10 * * * *"
+    workflow_dispatch:
 
-   jobs:
-   get-data:
-       runs-on: ubuntu-latest
-       steps:
-       - name: check out the repo
-           uses: actions/checkout@v3
-       - name: fetch data
-           run: |-
-           curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
-       - name: Commit and push
-           run: |-
-           git config user.name "Automated"
-           git config user.email "actions@users.noreply.github.com"
-           git add -A
-           timestamp=$(date -u)
-           git commit -m "Latest data: ${timestamp}" || exit 0
-           git push
+    jobs:
+    get-data:
+        runs-on: ubuntu-latest
+        steps:
+        - name: check out the repo
+        uses: actions/checkout@v3
+        - name: fetch data
+        run: |-
+            curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
+        - name: Commit and push
+        run: |-
+            git config user.name "Automated"
+            git config user.email "actions@users.noreply.github.com"
+            git add -A
+            timestamp=$(date -u)
+            git commit -m "Latest data: ${timestamp}" || exit 0
+            git push
    ```
 
    A commented version of the YML file is available [here](.github/workflows/01_hello_data.yml).
@@ -121,27 +121,28 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
 1. Create a `get_all_data.py` file in the root of the directory, and paste the following code in it.
 
    ```
-   import pandas as pd # import pandas library for data manipulation and analysis
-   from pathlib import Path # import path library to work with file paths
+    import pandas as pd # import pandas library for data manipulation and analysis
+    from pathlib import Path # import path library to work with file paths
 
-   df_current = pd.read_csv('usgs_current.csv')
+    df_current = pd.read_csv('usgs_current.csv')
 
-   path = Path("usgs_main.csv")
+    path = Path("usgs_main.csv")
 
-   if path.is_file() == False:
-   # if false, save initial main file
-    df_current.to_csv("usgs_main.csv", index = False)
+    if path.is_file() == False:
+        # if false, save initial main file
+        df_current.to_csv("usgs_main.csv", index = False)
 
-   else:
-   # if the file already exists, save it to a dataframe and then append to a new one
-    df_main_old = pd.read_csv("usgs_main.csv")
-    df_main_new = pd.concat([df_main_old,df_current])
+    else:
+        # if the file already exists, save it to a dataframe and then append to a new one
+        df_main_old = pd.read_csv("usgs_main.csv")
+        df_main_new = pd.concat([df_main_old,df_current])
 
-   # deduplicate based on unique id
-   df_main_new_drop_dupes = df_main_new.drop_duplicates(subset = "id", keep = "first")
+        # deduplicate based on unique id
+        df_main_new_drop_dupes = df_main_new.drop_duplicates(subset = "id", keep = "first")
 
-   # save to dataframe and overwrite the old usgs_main file
-   df_main_new_drop_dupes.to_csv("usgs_main.csv", index = False)
+        # save to dataframe and overwrite the old usgs_main file
+        df_main_new_drop_dupes.to_csv("usgs_main.csv", index = False)
+
 
    ```
 
@@ -193,34 +194,34 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
     <summary>🆘 Help!</summary>
 
    ```
-   name: Hello, Python!
+    name: Hello, Python!
 
-   on:
-   schedule:
-       - cron: "*/10 * * * *"
-   workflow_dispatch:
+    on:
+    schedule:
+        - cron: "*/10 * * * *"
+    workflow_dispatch:
 
-   jobs:
-   get-data:
-       runs-on: ubuntu-latest
-       steps:
-       - name: check out the repo
-           uses: actions/checkout@v3
-       - name: fetch data
-           run: |-
-           curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
-       - name: Install requirements
-           run: python -m pip install pandas pathlib
-       - name: Run script to creat main csv
-           run: python get_all_data.py
-       - name: Commit and push if it changed
-           run: |-
-           git config user.name "Automated"
-           git config user.email "actions@users.noreply.github.com"
-           git add -A
-           timestamp=$(date -u)
-           git commit -m "Latest data: ${timestamp}" || exit 0
-           git push
+    jobs:
+    get-data:
+        runs-on: ubuntu-latest # ---TO FILL:  let's use an Ubuntu 🖥️ (the latest one!)---
+        steps:
+            - name: check out the repo
+            uses: actions/checkout@v3
+            - name: fetch data
+            run: |-
+                curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
+            - name: Install requirements
+            run: python -m pip install pandas pathlib # ---TO FILL: what Python libraries did we use? 🐼 and 🚗 ---
+            - name: Run script to create main csv
+            run: python get_all_data.py # ---TO FILL: what's the name of our file? 🐍---
+            - name: Commit and push if it changed
+            run: |-
+                git config user.name "Automated"
+                git config user.email "actions@users.noreply.github.com"
+                git add -A
+                timestamp=$(date -u)
+                git commit -m "Latest data: ${timestamp}" || exit 0
+                git push
 
    ```
 
