@@ -249,6 +249,8 @@ jobs:
 
 ## Appendix
 
+- Now that we are periodically downloading the data, the `raw` URL to the CSV can be used in a D3 chart of a Datawrapper graphic that updates automatically.
+
 - [GitHub Actions documentation](https://docs.github.com/en/actions/learn-github-actions/understanding-github-actions), including helpful resources for all the keywords the workflow uses.
 
 - Are there examples of GitHub Actions?
