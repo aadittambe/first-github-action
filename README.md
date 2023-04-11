@@ -105,7 +105,9 @@ jobs:
 <details>
 
 <summary>How?</summary>
+
 ![](screenshots/Screenshot%202023-04-10%20at%202.26.11%20PM.png)
+
 </details>
 
 3. Navigate to the `Actions` tab in the repo, and run the Action.
