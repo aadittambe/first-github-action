@@ -56,34 +56,50 @@ For the purposes of this presentation, we will be working entirely in the browse
 
 2. Next, copy and paste the following code in the file, and commit it
 
-   ```
-    name: Hello, data!
+```
+# ☝️ First, a name for our Action. This will be displayed in the GitHub Actions tab.
+name: Hello, data!
 
-    on:
-    schedule:
-        - cron: "*/10 * * * *"
-    workflow_dispatch:
+# ⚙️ Next, give it a trigger -- when do you want the action to run? On a push, pull, schedule?
+on:
+  # ⌛️ We want to schedule it
+  schedule:
+    # "cron" is your Unix-like operating systems' way of interpreting time. It's an expression made of five fields which represent the time to execute a command.
+    #  More information here: https://crontab.guru/#*_*_*_*.
+    - cron: "*/10 * * * *"
+    # The keyword `workflow_dispatch` will let us manually run the Action on GitHub.
+    # Without this keyword, we would have to wait for 10 minutes every time
+    # to test and see how the action turned out.
+  workflow_dispatch:
 
-    jobs:
-    get-data:
-        runs-on: ubuntu-latest
-        steps:
-        - name: check out the repo
+# 💼 Finally, let's tell our file what command to execute. A GitHub Action can be made up of several such jobs.
+jobs:
+  # Give this particular job a name, `hello_world`.
+  get-data:
+    # Tell the GitHub Action what kind of virtual machine to run on. In our case, we'll be using the latest version of Ubuntu.
+    runs-on: ubuntu-latest
+    # Within this job, let's define our commands in steps
+
+    steps:
+      # First, we need to clone the repo on the Ubuntu virtual runner.
+      # This is just like you would clone a repo on your computer before exploring the code within it.
+      - name: check out the repo
         uses: actions/checkout@v3
-        - name: fetch data
+      # Next, we will execute a simple command, that uses curl to get the CSV
+      - name: fetch data
         run: |-
-            curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
-        - name: Commit and push
+          curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
+      # Lastly, after the Action has run on a virtual machine, we will need to commit and push the file back to
+      # this repo, so we can access it there.
+      - name: Commit and push
         run: |-
-            git config user.name "Automated"
-            git config user.email "actions@users.noreply.github.com"
-            git add -A
-            timestamp=$(date -u)
-            git commit -m "Latest data: ${timestamp}" || exit 0
-            git push
-   ```
-
-   A commented version of the YML file is available [here](.github/workflows/01_hello_data.yml).
+          git config user.name "Automated"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          timestamp=$(date -u)
+          git commit -m "Latest data: ${timestamp}" || exit 0
+          git push
+```
 
    <details>
    <summary>How?</summary>
@@ -120,36 +136,36 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
 
 1. Create a `get_all_data.py` file in the root of the directory, and paste the following code in it.
 
-   ```
-    import pandas as pd # import pandas library for data manipulation and analysis
-    from pathlib import Path # import path library to work with file paths
+```
+import pandas as pd # import pandas library for data manipulation and analysis
+from pathlib import Path # import path library to work with file paths
 
-    df_current = pd.read_csv('usgs_current.csv')
+df_current = pd.read_csv('usgs_current.csv')
 
-    path = Path("usgs_main.csv")
+path = Path("usgs_main.csv")
 
-    if path.is_file() == False:
-        # if false, save initial main file
-        df_current.to_csv("usgs_main.csv", index = False)
+if path.is_file() == False:
+    # if false, save initial main file
+    df_current.to_csv("usgs_main.csv", index = False)
 
-    else:
-        # if the file already exists, save it to a dataframe and then append to a new one
-        df_main_old = pd.read_csv("usgs_main.csv")
-        df_main_new = pd.concat([df_main_old,df_current])
+else:
+    # if the file already exists, save it to a dataframe and then append to a new one
+    df_main_old = pd.read_csv("usgs_main.csv")
+    df_main_new = pd.concat([df_main_old,df_current])
 
-        # deduplicate based on unique id
-        df_main_new_drop_dupes = df_main_new.drop_duplicates(subset = "id", keep = "first")
+    # deduplicate based on unique id
+    df_main_new_drop_dupes = df_main_new.drop_duplicates(subset = "id", keep = "first")
 
-        # save to dataframe and overwrite the old usgs_main file
-        df_main_new_drop_dupes.to_csv("usgs_main.csv", index = False)
+    # save to dataframe and overwrite the old usgs_main file
+    df_main_new_drop_dupes.to_csv("usgs_main.csv", index = False)
 
 
-   ```
+```
 
    <details>
    <summary>How?</summary>
 
-   ![](screenshots/Screenshot%202023-04-07%20at%2012.10.32%20PM.png)
+![](screenshots/Screenshot%202023-04-07%20at%2012.10.32%20PM.png)
 
    </details>
 
@@ -159,63 +175,35 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
    Copy the next code chunk and paste it into the file:
 
    ```
-   name: Hello, Python!
 
-   on:
-   schedule:
-
-       - cron: # ---TO FILL:  Every 🔟 minutes---
-   workflow_dispatch:
-
-   jobs:
-   get-data:
-       runs-on:: # ---TO FILL:  let's use an Ubuntu 🖥️ (the latest one!)---
-       steps:
-       - name: check out the repo
-           uses: actions/checkout@v3
-       - name: fetch data
-           run: |-
-           curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
-       - name: Install requirements
-           run: python -m pip install # ---TO FILL: what Python libraries did we use? 🐼 and 🚗 ---
-       - name: Run script to create main csv
-           run: python # ---TO FILL: what's the name of our file? 🐍---
-       - name: Commit and push if it changed
-           run: |-
-           git config user.name "Automated"
-           git config user.email "actions@users.noreply.github.com"
-           git add -A
-           timestamp=$(date -u)
-           git commit -m "Latest data: ${timestamp}" || exit 0
-           git push
    ```
 
     <details>
     <summary>🆘 Help!</summary>
 
-   ```
-    name: Hello, Python!
+```
+name: Hello, Python!
 
-    on:
+on:
     schedule:
-        - cron: "*/10 * * * *"
+        - cron: "*/10 * * * *" # ---TO FILL:  every 🔟 minutes ---
     workflow_dispatch:
 
-    jobs:
+jobs:
     get-data:
         runs-on: ubuntu-latest # ---TO FILL:  let's use an Ubuntu 🖥️ (the latest one!)---
         steps:
             - name: check out the repo
-            uses: actions/checkout@v3
+              uses: actions/checkout@v3
             - name: fetch data
-            run: |-
+              run: |-
                 curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
             - name: Install requirements
-            run: python -m pip install pandas pathlib # ---TO FILL: what Python libraries did we use? 🐼 and 🚗 ---
+              run: python -m pip install pandas pathlib # ---TO FILL: what Python libraries did we use? 🐼 and 🚗 ---
             - name: Run script to create main csv
-            run: python get_all_data.py # ---TO FILL: what's the name of our file? 🐍---
+              run: python get_all_data.py # ---TO FILL: what's the name of our file? 🐍---
             - name: Commit and push if it changed
-            run: |-
+              run: |-
                 git config user.name "Automated"
                 git config user.email "actions@users.noreply.github.com"
                 git add -A
@@ -223,7 +211,7 @@ Similar to how we created the YML file in the browser itself, we'll add this Pyt
                 git commit -m "Latest data: ${timestamp}" || exit 0
                 git push
 
-   ```
+```
 
     </details>
 
