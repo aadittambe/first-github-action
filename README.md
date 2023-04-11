@@ -35,7 +35,7 @@ Contents:
 ### 1️⃣ Hello, data (Watch!)
 
 To get familiar with logging data to the repository, let's write a simple `curl` script that fetches earthquake data provided by USGS. This file is updated every minute, so it's a good candidate for running a GitHub Action.
-The file source page of the page is [here](https://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php).
+The file source page of the CSV is [here](https://earthquake.usgs.gov/earthquakes/feed/v1.0/csv.php).
 
 Let's write a script that
 
