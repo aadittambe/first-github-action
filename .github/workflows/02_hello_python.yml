@@ -15,7 +15,7 @@ jobs:
               run: |-
                 curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
             - name: Install requirements
-              run: python -m pip install pandas pathlib # ---TO FILL: what Python libraries did we use? 🐼 and 🚗 ---
+              run: python -m pip install pandas path # ---TO FILL: what Python libraries did we use? 🐼 and 🚗 ---
             - name: Run script to create main csv
               run: python get_all_data.py # ---TO FILL: what's the name of our file? 🐍---
             - name: Commit and push if it changed
