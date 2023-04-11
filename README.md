@@ -2,11 +2,18 @@
 
 Contents:
 
-- [What are GitHub Actions?](#what-are-github-actions)
 - [What are we doing today?](#what-are-we-doing-today)
+- [What are GitHub Actions?](#what-are-github-actions)
 - [Prerequisites](#before-we-begin)
 - [Let's get started!](#lets-get-started)
 - [Appendix](#appendix)
+
+## What are we doing today?
+
+- Understanding GitHub Actions
+- Getting familiar with the syntax used to build a GitHub Action
+  - We will write a workflow to download earthquake data published by USGS, which is updated every minute
+- Going over a few use cases
 
 ## What are GitHub Actions?
 
@@ -18,16 +25,10 @@ Contents:
 
 📥 have the ability to log files to the repository
 
-## What are we doing today?
-
-🧑‍💻 getting familiar with the syntax to build a workflow (a markup language called YML)
-
-⚙️ run two tasks
-
 ## Prerequisites
 
-- A GitHub account
-- with permission to let GitHub Actions commit and push files
+- Let's create a new repository
+- Let's change its settings so that GitHub Actions can commit and push files
 
 ## Let's get started!
 
@@ -43,7 +44,7 @@ Let's write a script that
 3. uses `curl` to download a CSV
 4. commits and pushes the CSV to our repo
 
-For the purposes of this presentation, we will be working entirely in the browser. However, you can set up a local folder for version control with git.
+For the purpose of this presentation, we will be working entirely in the browser. However, you can set up a local folder for version control with git.
 
 1. Create the `.github/workflows/` directories, and a file called `hello_data.yml` inside it
 
