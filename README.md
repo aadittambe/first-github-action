@@ -101,20 +101,21 @@ jobs:
           git push
 ```
 
-   <details>
-   <summary>How?</summary>
-   ![](screenshots/Screenshot%202023-04-10%20at%202.26.11%20PM.png)
-   </details>
+<details>
+
+<summary>How?</summary>
+![](screenshots/Screenshot%202023-04-10%20at%202.26.11%20PM.png)
+</details>
 
 3. Navigate to the `Actions` tab in the repo, and run the Action.
    We are able to manually run the Action because of the `workflow_dispatch` keyword we added to our YML file.
 
-   <details>
-   <summary>How?</summary>
+<details>
+<summary>How?</summary>
 
-   ![](screenshots/Screenshot%202023-04-10%20at%202.33.20%20PM.png)
+![](screenshots/Screenshot%202023-04-10%20at%202.33.20%20PM.png)
 
-   </details>
+</details>
 
 4. Let's go back to the `Code` section of our repository, and see the new CSV created!
 
@@ -171,12 +172,40 @@ else:
 
 2. Navigate back to the repo, and we will create another YML workflow file, just like we did in step 1. This time, we will call it `hello_python.yml`.
 
-   ✍️ This section will require you to fill in some blanks ✍️
-   Copy the next code chunk and paste it into the file:
+✍️ This section will require you to fill in some blanks ✍️
+Copy the next code chunk and paste it into the file:
 
-   ```
+```
+name: Hello, Python!
 
-   ```
+on:
+    schedule:
+        - cron: ___ # ---TO FILL:  every 🔟 minutes ---
+    workflow_dispatch:
+
+jobs:
+    get-data:
+        runs-on: # ---TO FILL:  let's use an Ubuntu 🖥️ (the latest one!)---
+        steps:
+            - name: check out the repo
+              uses: actions/checkout@v3
+            - name: fetch data
+              run: |-
+                curl "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.csv" -o usgs_current.csv
+            - name: Install requirements
+              run: python -m pip install ___ ___ # ---TO FILL: what Python libraries did we use? 🐼 and 🚗 ---
+            - name: Run script to create main csv
+              run: python ___ # ---TO FILL: what's the name of our file? 🐍---
+            - name: Commit and push if it changed
+              run: |-
+                git config user.name "Automated"
+                git config user.email "actions@users.noreply.github.com"
+                git add -A
+                timestamp=$(date -u)
+                git commit -m "Latest data: ${timestamp}" || exit 0
+                git push
+
+```
 
     <details>
     <summary>🆘 Help!</summary>
